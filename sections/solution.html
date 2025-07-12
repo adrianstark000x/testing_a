@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.32">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>solution</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-37eea08aefeeee20ff55810ff984fec1.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-991b1886d3c685c7aa2b62b80640c7af.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="fullcontent quarto-light">
+
+<div id="quarto-search-results"></div>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title">Solution</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In the following sections we recommend a solution that entails: * increasing semantic interoperability between tools in the EconDataverse * linking data to other data and metadata * constraining data and metadata using ontologies * developing new tools that rely on semantic interoperability, linked data, and ontologies to streamline economic data reuse</p>
+<section id="semantic-interoperability" class="level2">
+<h2 class="anchored" data-anchor-id="semantic-interoperability">Semantic interoperability</h2>
+<p>The EconDataverse is both a set of software tools in R and Python and a set of conventions and best practices for developing tools that work with economic data. There are coding conventions that ensure consistent style across packages as well as data syntax conventions that ensure compatibility with popular data manipulation and visualization libraries in both R and Python.</p>
+<p>Interoperability between tools in the EconDataverse is a key concern, since deficiencies in interoperability create additional toil for the user. In the EconDataverse the problem of interoperability is one of ensuring the tools “speak the same language”. A simple approach to this problem is to consider language as equivalent to syntax, and ensure that tools consume and produce the same syntax, such as the tidy format (TKTK ref) espoused by current EconDataverse tools. This reduces the toil associated with transforming syntax between tools but leaves the problem of <strong>semantic interoperability</strong>.</p>
+<p>In this context semantic interoperability is the ability of different tools to exchange data with unambiguous, shared meaning. It ensures that the meaning of the data is preserved and correctly interpreted between tools, even if those tools use different technologies, such as R and Python.</p>
+<p>Semantic interoperability starts from agreeing on unambiguous identifiers for things. For example, the EconDataverse package maintainers have agreed to refer to countries using <a href="TKTK ref">ISO 3166-1 standard codes</a> and to represent years using four digits and the Gregorian calendar. This consensus ensures that data from different sources about the same countries and years can be joined, as in the R example below:</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Teal: ChatGPT generated this example. It’d be great to have a better one along the same lines.</p>
+</div>
+</div>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Load required package</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Macroeconomic dataset: GDP (in USD billions) ---</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>macro_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">iso3c =</span> <span class="fu">c</span>(<span class="st">"USA"</span>, <span class="st">"FRA"</span>, <span class="st">"DEU"</span>, <span class="st">"JPN"</span>),</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="fu">c</span>(<span class="dv">2024</span>, <span class="dv">2024</span>, <span class="dv">2024</span>, <span class="dv">2024</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">gdp_billion =</span> <span class="fu">c</span>(<span class="dv">27300</span>, <span class="dv">3100</span>, <span class="dv">4600</span>, <span class="dv">5100</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Population dataset: Population (in millions) ---</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>population_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">iso3c =</span> <span class="fu">c</span>(<span class="st">"USA"</span>, <span class="st">"FRA"</span>, <span class="st">"DEU"</span>, <span class="st">"BRA"</span>),</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="fu">c</span>(<span class="dv">2024</span>, <span class="dv">2024</span>, <span class="dv">2024</span>, <span class="dv">2024</span>),</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">population_million =</span> <span class="fu">c</span>(<span class="dv">334</span>, <span class="dv">67</span>, <span class="dv">84</span>, <span class="dv">215</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Perform inner join on ISO country code and year ---</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>joined_data <span class="ot">&lt;-</span> <span class="fu">inner_join</span>(macro_data, population_data, <span class="at">by =</span> <span class="fu">c</span>(<span class="st">"iso3c"</span>, <span class="st">"year"</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Imagine that the structure of the two datasets stayed the same but they used different identifiers for countries: one dataset referred to the United States as “États-Unis” while the other referred to it as “USA”.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Macroeconomic dataset: GDP (in USD billions) ---</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>macro_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">iso3c =</span> <span class="fu">c</span>(<span class="st">"États-Unis"</span>, <span class="st">"FRA"</span>, <span class="st">"DEU"</span>, <span class="st">"JPN"</span>),</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="fu">c</span>(<span class="dv">2024</span>, <span class="dv">2024</span>, <span class="dv">2024</span>, <span class="dv">2024</span>),</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">gdp_billion =</span> <span class="fu">c</span>(<span class="dv">27300</span>, <span class="dv">3100</span>, <span class="dv">4600</span>, <span class="dv">5100</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># --- Population dataset: Population (in millions) ---</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>population_data <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">iso3c =</span> <span class="fu">c</span>(<span class="st">"USA"</span>, <span class="st">"FRA"</span>, <span class="st">"DEU"</span>, <span class="st">"BRA"</span>),</span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">year =</span> <span class="fu">c</span>(<span class="dv">2024</span>, <span class="dv">2024</span>, <span class="dv">2024</span>, <span class="dv">2024</span>),</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">population_million =</span> <span class="fu">c</span>(<span class="dv">334</span>, <span class="dv">67</span>, <span class="dv">84</span>, <span class="dv">215</span>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Join on USA data is not going to work as intended here.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The data analyst would have to first resolve the discrepancy – mapping “États-Unis” to “USA” or vice versa – in order to harmonize data from multiple sources. That work is toil that can be eliminated by agreeing on unambiguous identifiers and using them consistently.</p>
+<section id="uniquely-identifying-numeric-data" class="level3">
+<h3 class="anchored" data-anchor-id="uniquely-identifying-numeric-data">Uniquely identifying numeric data</h3>
+<p>The R example in <a href="TKTK ref">figure X</a> also includes numeric data such as GDP (in billions of of US Dollars) and population (in millions). Unlike the ISO 3166 country codes, these data have ambiguous meanings. A human data analyst can infer at least part of the meaning from the column name (gdp_billion) and the accompanying comment (“GDP (in USD billions)”). Other parts are still ambiguous – is it nominal or real GDP?</p>
+<p>We would like to eliminate this ambiguity and the toil required to resolve it by associating numeric data with unambiguous metadata. The <a href="TKTK ref">SDMX Information Model</a> recommends that the metadata for a numeric datum include:</p>
+<ul>
+<li><a href="TKTK ref to SDMX Information Model">Dimensions</a> whose combined values uniquely identify that datum in a <a href="TKTK ref OLAP Cube">cube/hypercube of dimensions</a></li>
+<li><a href="TKTK ref to SDMX information Model">Attributes</a> of the datum, such as units of measurement</li>
+</ul>
+<p>The dimensions uniquely identifying a single nominal GDP measurement are:</p>
+<ol type="1">
+<li>Place: the country associated with the GDP (e.g., “USA” and “FRA”)</li>
+<li>Time: the year the GDP was measured (e.g., 2024).</li>
+<li>Indicator: nominal GDP</li>
+</ol>
+<p>Dimensions like “place” and attributes like “unit of measurement” should themselves be uniquely identified, and have associated properties such as human-readable labels and definitions, relationships with other dimensions or attributes, and constraints on the values that can be associated with a dimension (e.g., <a href="TKTK ref">code lists</a>). The <a href="TKTK ref">SDMX Content-Oriented Guidelines</a> provide a library of well-known, uniquely-identified dimensions and attributes that can be reused in many different domains.</p>
+</section>
+</section>
+<section id="linking-data" class="level2">
+<h2 class="anchored" data-anchor-id="linking-data">Linking data</h2>
+<p>We can use the unambiguous identifier for a thing (“USA”) in the data as a key to resolve additional properties about the thing as well as its relationships with other things, following the <a href="http://linkeddatabook.com/editions/1.0/">Linked Data principles</a>. For example, we can use <a href="https://schema.org">schema.org</a> vocabularies to describe the relationship between the country of the United States and the continent of North America, in a machine-readable format (an <a href="TKTK ref">RDF</a> <a href="TKTK ref">knowledge graph</a> represented in <a href="TKTK ref">Turtle</a>):</p>
+<pre class="ttl"><code>@prefix ex: &lt;http://example.org/entities/&gt; .
+@prefix schema: &lt;https://schema.org/&gt; .
+
+# United States of America
+ex:USA a schema:Country ;
+    # Human-readable labels in multiple human languages
+    schema:name "United States of America"@en ;
+    schema:name "États-Unis"@fr ;
+    schema:identifier "USA" ;
+    # A relationship: the country United States is contained in the place North America.
+    schema:containedInPlace ex:NA .
+
+# North America
+ex:NA a schema:Continent ;
+    schema:name "North America"@en ;
+    schema:identifier "NA" .</code></pre>
+</section>
+<section id="constraining-data-and-metadata" class="level2">
+<h2 class="anchored" data-anchor-id="constraining-data-and-metadata">Constraining data and metadata</h2>
+<p>There is an additional level of consensus at work in the example above. By referencing schema.org we are implicitly agreeing that the unambiguous identifier <code>schema:containedInPlace</code> refers to a way of relating two places. That identifier can be used in turn as a key to further linked metadata:</p>
+<pre class="ttl"><code>@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix schema: &lt;https://schema.org/&gt; .
+
+schema:containedInPlace a rdf:Property ;
+    rdfs:label "containedInPlace" ;
+    rdfs:comment "The basic containment relation between a place and one that contains it." ;
+    schema:domainIncludes schema:Place ;
+    schema:inverseOf schema:containsPlace ;
+    schema:rangeIncludes schema:Place .</code></pre>
+<p>This metadata is part of an <strong>ontology</strong>. An ontology is an “explicit specification of a conceptualization” (TKTK ref Gruber 1995) of a domain, including the “the types, properties, and interrelationships of entities that exist for a particular domain of discourse” (TKTK ref Gene Ontology Consortium). An ontology includes machine-readable specifications as well as human-readable labels and definitions that codify shared understanding of a domain. In the snippet above the domain is geography – places and a valid relationship (contained-in) between them. The ontology is not about specific places, but about the category “place”, its possible properties, and how it relates to other categories. The example eliminates ambiguity what <code>schema:containedInPlace</code> means through the use of a human-readable definition (“The basic containment relation …”) as well as machine-enforceable <strong>constraints</strong> on the categories of things that can be involved in the <code>schema:containedInPlace</code> relation (the <code>schema:domainIncludes</code> and <code>schema:rangeIncludes</code>). By constraining the domain of discourse an ontology amplifies the benefits of reusing identifiers by providing further clarity to humans as well as a way for machines to ensure that data and metadata stay within those constraints.</p>
+<section id="an-ontology-of-economics" class="level3">
+<h3 class="anchored" data-anchor-id="an-ontology-of-economics">An ontology of economics</h3>
+<p>Ontologies like the <a href="https://spec.edmcouncil.org/fibo/">Financial Industry Business Ontology (FIBO)</a> are commonly used in the financial services sector to enable cross-system federation and aggregation of data in order to support decision-making, streamline regulatory reporting, and encourage the adoption of advanced analytical capabilities.</p>
+<p>Unfortunately, the macroeconomics domain does not have an ontology comparable in scope and rigour to FIBO. We recommend developing an ontology of macroeconomics incrementally. At a minimum this ontology should model:</p>
+<ul>
+<li>the structure of statistical data cubes (dimensions, attributes, measures)</li>
+<li>common dimensions such as time, place, and macroeconomic indicators</li>
+<li>common attributes such as units</li>
+</ul>
+<p>In the long term the ontology should also model:</p>
+<ul>
+<li>relationships between dimensions e.g., different macroeconomic indicators</li>
+<li>relationships between attributes e.g., unit conversions</li>
+<li>data lineage and provenance</li>
+<li>modeling assumptions</li>
+<li>information about economic organizations, people, and the relationships between them (a <a href="TKTK ref">social network</a>)</li>
+<li>information about places and relationships between them (e.g., aggregates such as Low Income Countries)</li>
+<li>machine-readable assertions extracted from human-written web pages and other documents (a <a href="TKTK ref">knowledge graph</a> about the economic world)</li>
+</ul>
+<p>Fortunately, there are a number of existing standards that can serve as building blocks for the ontology, including:</p>
+<ul>
+<li><a href="TKTK ref">SDMX Data Structure Definitions (DSDs)</a> e.g., <a href="https://sdmx.org/sdmx-data-structure-definitions-for-balance-of-payments-sdmx-bop/">Balance of Payments (SDMX-BOP and Foreign Debt Investments (SDMX-FDI)</a></li>
+<li>the <a href="https://www.w3.org/TR/vocab-data-cube/">RDF Data Cube Vocabulary</a> for publishing multi-dimensional statistical data as <a href="TKTK ref">Linked Data</a></li>
+<li>the <a href="https://www.w3.org/TR/prov-o/">PROV Ontology</a> of data lineage and provenance</li>
+<li><a href="https://qudt.org">QUDT</a> ontologies of units of measure, quantity kind, dimensions and data types</li>
+<li><a href="https://www.w3.org/2004/02/skos/">SKOS</a> specifications and standards for knowledge organization systems (KOS) (thesauri, taxonomies, et al.)</li>
+<li>the <a href="https://www.w3.org/TR/void/">VoID vocabulary</a> for describing linked datasets</li>
+<li><a href="https://schema.org">Schema.org</a> cross-domain vocabularies</li>
+</ul>
+</section>
+</section>
+<section id="tools-to-streamline-economic-data-reuse" class="level2">
+<h2 class="anchored" data-anchor-id="tools-to-streamline-economic-data-reuse">Tools to streamline economic data reuse</h2>
+<p>Increasing semantic interoperability, developing ontologies, and taking advantage of linked data will reduce the toil and increase the productivity of using existing tools in the EconDataverse. However, in order to fully address the challenges highlighted in <strong>?@sec-solution-criteria</strong>, we also recommend expanding and refining the EconDataverse toolkit in three key areas:</p>
+<ul>
+<li>tools for extracting and transforming economic data and metadata</li>
+<li>tools for exploring and finding economic data and metadata</li>
+<li>tools for analyzing and manipulating financial models</li>
+</ul>
+<p>Figure <a href="#fig-solution-diagram" class="quarto-xref">Figure&nbsp;1</a> illustrates our proposal for a new high-level system architecture for EconDataverse tools.</p>
+<div id="cell-fig-solution-diagram" class="cell" data-execution_count="1">
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: node 'cf02cf40d1234baaae2737aecbf98d7e', graph '%3' size too small for label
+Warning: node '54244f63393744bc8a7f72f55de4589b', graph '%3' size too small for label</code></pre>
+</div>
+<div class="cell-output cell-output-display" data-execution_count="1">
+<div id="fig-solution-diagram" class="quarto-float quarto-figure quarto-figure-center anchored">
+<figure class="quarto-float quarto-float-fig figure">
+<div aria-describedby="fig-solution-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+<img src="solution_files/figure-html/fig-solution-diagram-output-2.png" class="img-fluid figure-img">
+</div>
+<figcaption class="quarto-float-caption-bottom quarto-float-caption quarto-float-fig" id="fig-solution-diagram-caption-0ceaefa1-69ba-4598-a22c-09a6ac19f8ca">
+Figure&nbsp;1: Recommended EconDataverse system architecture
+</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<p>Green lines indicate the flow of ontology-conformant data and metadata while red lines indicate the flow of data in other formats.</p>
+<p>The following subsections delve into the proposed tool developments in more detail.</p>
+<section id="sec-solution-etl" class="level3">
+<h3 class="anchored" data-anchor-id="sec-solution-etl">Tools for extracting, transforming, and loading economic data and metadata</h3>
+<p>The majority of packages in the current EconDataverse package ecosystem extract structured data from IMF, World Bank, and other sources and transform them into <a href="TKTK ref">tidy format</a>, with each variable as a column and each observation as a row. Metadata are typically limited to column names, which are not explicitly grounded in an ontology that would provide context and definitions. With the notable exception of ISO 3166 country codes, there is relatively little standardization of non-numeric data across data sources.</p>
+<p>In the short- to mid-term we recommend implementing an adapter library and command-line program that transforms ontology-conformant data to and from the formats expected by existing EconDataverse tools. In the long term these tools should be retrofitted to produce and consume ontology-conformant data and metadata.</p>
+<p>New tools in the EconDataverse should produce ontology-conformant data and metadata that fully capture the semantics of the source data. These can be easily but lossily transformed into convenient but semantics-poor formats like tidy data frames for compatibility with third party tools.</p>
+<p>Extraction should not be limited to structured data sources. The ontology can also be used to guide Large Language Models (LLMs) in the extraction of ontology-conformant structured data from natural language sources such as the <a href="TKTK ref">World Bank country and climate development reports</a> or the IMF’s <a href="https://www.imf.org/en/Publications/DSA">Debt Sustainability Analysis Low-Income Countries (DSA LIC reports)</a>. The latter comprise a mixture of narrative text, rendered tables, and charts as PDFs. We recommend starting by extracting statistical data cube-compatible data (dimensions, attributes, measures) from tables in the documents and experimenting with different libraries and APIs such as <a href="TKTK">pdfplumber</a> and <a href="TKTK">AWS Textract</a> to identify a toolchain that maximizes key extraction metrics such as <a href="TKTK ref">precision, recall, and F1 score</a>.</p>
+<p>Ontology-conformant data and metadata extracted and transformed by new and existing tools should be loaded into a store that can preserve the full richness of the data, such as an <a href="TKTK ref">RDF triple store</a>. The tools described in the next subsection should query this store.</p>
+</section>
+<section id="sec-solution-ui" class="level3">
+<h3 class="anchored" data-anchor-id="sec-solution-ui">Tools for exploring and finding economic data and metadata</h3>
+<p>Tools for exploring and finding data and metadata tend to be useful in proportion to how closely the data’s representation corresponds to the domain abstractions, like accounts and sub-accounts in Balance of Payments datasets. This requires a level of abstraction and interpretation that is difficult to achieve without building data source-specific tools. Instead, most generic tools work with data and metadata at the lowest common denominator of abstraction – as tables and rows of figures to be scanned or a corpus of arbitrary text to be searched. The problem of interpretation is mostly left up to the user.</p>
+<p>Having data and metadata from multiple sources conform to a rich, domain-specific ontology makes it possible to build tools that work at a higher level of abstraction without sacrificing source independence. Tools can make assumptions about the meaning of the data and relationships between them, which dramatically increases the tools’ power. For example, the next generation of EconDataverse tools could:</p>
+<ul>
+<li>group or aggregate data from different (geographic) reference areas by considering explicit relationships between areas, such as part-whole or collection membership</li>
+<li>let users browse and filter cube-structured datasets and slices by the dimensions they incorporate (e.g., time, place, gender), provenance, or recency</li>
+<li>suggest inputs for a given model by matching metadata about the inputs with metadata from a data/metadata catalog</li>
+<li>support <a href="https://ruben.verborgh.org/blog/2015/06/09/federated-sparql-queries-in-your-browser/">federated querying</a> of multiple public and private databases, such as <a href="TKTK ref">Google Data Commons</a></li>
+</ul>
+<p>These user-facing tools could have different interfaces or combinations of interfaces: * command line programs * graphical user interfaces * a <a href="https://en.wikipedia.org/wiki/Conversational_user_interface">conversational user interface</a> * programmatic interfaces (APIs), such as a <a href="TKTK ref">SPARQL endpoint</a> or <a href="TKTK ref">an SDMX Registry</a></p>
+</section>
+<section id="tools-for-analyzing-and-manipulating-financial-models" class="level3">
+<h3 class="anchored" data-anchor-id="tools-for-analyzing-and-manipulating-financial-models">Tools for analyzing and manipulating financial models</h3>
+<p>Finally, the EconDataverse needs tools for analyzing and financial models, which are typically encoded in Excel spreadsheets. In the short term, tools should automate or semi-automate toilsome tasks like:</p>
+<ul>
+<li>Manually reverse-engineering spreadsheets to identify which inputs are required for a subset of desired outputs, in order to avoid spending time populating redundant inputs</li>
+<li>Manually mapping statistical data cube measures to spreadsheet inputs</li>
+<li>Manually changing spreadsheets inputs in order to perform sensitivity analyses</li>
+</ul>
+</section>
+<section id="sec-solution-identifying-minimal-spreadsheet-inputs" class="level3">
+<h3 class="anchored" data-anchor-id="sec-solution-identifying-minimal-spreadsheet-inputs">Identifying minimal spreadsheet inputs</h3>
+<p>We recommend identifying or developing a tool that accepts a spreadsheet-based financial model such as the <a href="TKTK ref">LIC DSF</a> or the <a href="TKTK ref">Dynamic Debt Toolkit</a> and identifies which inputs are required for a subset of desired outputs, in order to avoid spending time populating redundant inputs. There are two fundamental approaches to this problem:</p>
+<ul>
+<li><strong>White box</strong>: build a <a href="https://en.wikipedia.org/wiki/Dependency_graph">dependency graph</a> of spreadsheet formulae spanning the inputs and outputs in order to identify which inputs the desired outputs depend on. This approach is likely to produce false positives – flagging a set of inputs larger than the true minimum – because it is insensitive to the magnitude of input changes.</li>
+<li><strong>Black box</strong>: mutate individual inputs and combinations of inputs and record which outputs change. This approach may produce false negatives – flagging a set of inputs smaller than the true minimum – because of untested interactions between inputs.</li>
+</ul>
+<p>Ideally a tool will utilize both approaches to check each other.</p>
+</section>
+<section id="sec-solution-disambiguating-inputs" class="level3">
+<h3 class="anchored" data-anchor-id="sec-solution-disambiguating-inputs">Disambiguating inputs</h3>
+<p>Much of the toil in using financial models lies in the process of identifying the right source data to supply as model inputs. For example, the Debt Dynamics Toolkit spreadsheet requires the following inputs in a single sheet:</p>
+<table class="table-bordered table-striped table-hover caption-top table">
+<caption>Dynamic Debt Toolkit inputs sheet</caption>
+<colgroup>
+<col style="width: 53%">
+<col style="width: 23%">
+<col style="width: 23%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Year / Variable</th>
+<th>2011</th>
+<th>2012</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>dt (debt including uncalled guarantees): stock of total gross public debt, percent of GDP</td>
+<td>31.59</td>
+<td>35.34</td>
+</tr>
+<tr class="even">
+<td>o/w stock of local-currency guarantees (uncalled): stock of uncalled guarantees in local currency included in total debt, percent of GDP</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr class="odd">
+<td>o/w stock of foreign-currency guarantees (uncalled): stock of uncalled guarantees in foreign currency included in total debt, percent of GDP</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr class="even">
+<td>αt (share excl. guarantees): share of foreign currency denominated debt in total debt, percent of total debt</td>
+<td>55.05</td>
+<td>58.87</td>
+</tr>
+<tr class="odd">
+<td>et (LCU/FCU, avg): nominal average exchange rate, local currency per unit of foreign currency</td>
+<td>18.92</td>
+<td>19.50</td>
+</tr>
+<tr class="even">
+<td>et (LCU/FCU, eop): nominal end of period exchange rate, local currency per unit of foreign currency</td>
+<td>19.05</td>
+<td>19.96</td>
+</tr>
+<tr class="odd">
+<td>itd: nominal effective interest rate on local currency denominated debt, percent</td>
+<td>8.92</td>
+<td>9.23</td>
+</tr>
+<tr class="even">
+<td>itf: nominal effective interest rate on foreign currency denominated debt, percent</td>
+<td>2.46</td>
+<td>2.03</td>
+</tr>
+<tr class="odd">
+<td>πt: GDP deflator inflation, percent</td>
+<td>5.60</td>
+<td>5.39</td>
+</tr>
+<tr class="even">
+<td>gt: Real GDP growth, percent</td>
+<td>3.84</td>
+<td>4.13</td>
+</tr>
+<tr class="odd">
+<td>pbt: Primary balance, percent of GDP</td>
+<td>-3.28</td>
+<td>-4.03</td>
+</tr>
+<tr class="even">
+<td>oft (other net debt-creating flows): Other net debt creating flows, percent of GDP</td>
+<td>0.00</td>
+<td>0.00</td>
+</tr>
+<tr class="odd">
+<td>πft: Foreign GDP deflator inflation, percent (used in fan chart)</td>
+<td>2.09</td>
+<td>1.92</td>
+</tr>
+</tbody>
+</table>
+<p>Per the <a href="TKTK ref">data cube model</a>, each input cell can be uniquely identified by dimensions:</p>
+<ul>
+<li>Time: with controlled values 2011 and 2012</li>
+<li>Place: implicitly, the country whose debt is being analyzed</li>
+<li>Indicator: such as “Real GDP growth”</li>
+</ul>
+<p>In this case the year and place are unambiguously identified and are relatively easy to match to source data. It is not as obvious how to map the indicator “nominal effective interest rate on foreign currency denominated debt, percent” to source data.</p>
+<p>One approach is to treat “nominal effective interest rate on foreign currency denominated debt, percent” as a unique identifier as-is, like <a href="TKTK ref">Google Data Commons</a> does. This is likely to work for some simple indicators like “nominal GDP” but falters on more complex indicators that could be described in different ways, like this example.</p>
+<p>The approach we recommend is to decompose the name into a structured combination of sub-identifiers:</p>
+<ul>
+<li>a base indicator: “interest rate”</li>
+<li>qualifiers on the base indicator: “nominal”, “effective”, “on foreign currency denominated debt”</li>
+<li>attributes: “percent”, which should be treated as an attribute of the data rather than as part of the indicator dimension</li>
+</ul>
+<p>The structure and valid combinations of indicator, qualifier, and attribute values should be dictated by the ontology. Given a permissible set of controlled values, a Large Language Model could aid in this decomposition from natural language.</p>
+<p>This approach parallels the way World Bank debt codes can be decomposed into segments. For example, the World Bank debt code <code>DT.DOD.[Debt Instrument].[Debtor/Creditor Sector].[Unit]</code> can be decomposed into:</p>
+<ul>
+<li>DT: Debt</li>
+<li>DOD: Debt Outstanding and Disbursed</li>
+<li>Instrument Type (e.g., long-term, short-term, use of IMF credit)</li>
+<li>Debtor or Creditor (e.g., public, private, multilateral, bilateral)</li>
+<li>Unit of measure (e.g., CD = current US dollars, GD.ZS = % of GNI)</li>
+</ul>
+</section>
+<section id="automating-sensitivity-analyses-with-spreadsheets" class="level3">
+<h3 class="anchored" data-anchor-id="automating-sensitivity-analyses-with-spreadsheets">Automating sensitivity analyses with spreadsheets</h3>
+<p>The “black box” approach to identifying minimal spreadsheet inputs, described in <a href="#sec-solution-identifying-minimal-spreadsheet-inputs" class="quarto-xref">Section&nbsp;4.4</a>, can also be used to perform sensitivity analyses by mutating combinations of spreadsheet inputs and recording which outputs change.</p>
+</section>
+<section id="models-as-data-models-as-code" class="level3">
+<h3 class="anchored" data-anchor-id="models-as-data-models-as-code">Models as data, models as code</h3>
+<p>In the long term the financial models themselves should be treated as data, and extracted and transformed into ontology-conformant data and metadata. This approach would build on open source precedents like <a href="https://morphir.finos.org/">Morphir</a>, a system that captures an application’s domain model and business logic in a portable / technology-agnostic manner. Given a portable representation of a model and an input dataset, we can execute the model by either:</p>
+<ol type="1">
+<li><a href="https://en.wikipedia.org/wiki/Interpreter_(computing)">Interpreting</a> the model representation at runtime.</li>
+<li><a href="https://en.wikipedia.org/wiki/Code_generation_(compiler)">Generating code</a> from the representation and executing the code.</li>
+</ol>
+<p>Morphir takes the former approach. We would recommend the latter: lossily generating spreadsheets, Python, R, or other code from ontology types (e.g., dimensions and measures) and a portable model representation. The advantage of this approach is that it would produce an intermediate artifact (generated code) that can be inspected by human users and utilized from non-generated code in a way that ensures model inputs conform to the expected ontology types, above and beyond simple syntax checking.</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
