@@ -162,7 +162,7 @@ Increasing semantic interoperability, developing ontologies, and taking advantag
 
 Figure @fig-solution-diagram illustrates our proposal for a new high-level system architecture for EconDataverse tools.
 
-{{< include figures/solution-diagram.qmd >}}
+{{< include /figures/solution-diagram.qmd >}}
 
 Green lines indicate the flow of ontology-conformant data and metadata while red lines indicate the flow of data in other formats.
 
