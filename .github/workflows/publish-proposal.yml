@@ -21,21 +21,24 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           tinytex: true
+
       - name: Setup Graphviz
         uses: ts-graphviz/setup-graphviz@v2
-        
+
       - name: Install Python and Dependencies
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
       
-      - name: Restore cached virtualenv
+      - name: Restore cached venv
+        id: cached-venv-dependencies
         uses: actions/cache/restore@v4
         with:
-          key: venv-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
           path: .venv
         
       - name: Install dependencies
+        if: steps.cached-venv-dependencies.outputs.cache-hit != 'true'
         run: |
           python3 -m venv .venv
           source .venv/bin/activate
@@ -46,7 +49,7 @@ jobs:
       - name: Save cached virtualenv
         uses: actions/cache/save@v4
         with:
-          key: venv-${{ runner.os }}-${{ steps.setup_python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
+          key: venv-${{ runner.os }}-${{ steps.setup-python.outputs.python-version }}-${{ hashFiles('requirements.txt') }}
           path: .venv
       
       - name: Render and publish to GitHub Pages
