@@ -1,0 +1,276 @@
+# Solution
+
+In the following sections we recommend a solution that entails:
+* increasing semantic interoperability between tools in the EconDataverse
+* linking data to other data and metadata
+* constraining data and metadata using ontologies
+* developing new tools that rely on semantic interoperability, linked data, and ontologies to streamline economic data reuse
+
+## Semantic interoperability
+
+The EconDataverse is both a set of software tools in R and Python and a set of conventions and best practices for developing tools that work with economic data. There are coding conventions that ensure consistent style across packages as well as data syntax conventions that ensure compatibility with popular data manipulation and visualization libraries in both R and Python.
+
+Interoperability between tools in the EconDataverse is a key concern, since deficiencies in interoperability create additional toil for the user. In the EconDataverse the problem of interoperability is one of ensuring the tools "speak the same language". A simple approach to this problem is to consider language as equivalent to syntax, and ensure that tools consume and produce the same syntax, such as the tidy format (TKTK ref) espoused by current EconDataverse tools. This reduces the toil associated with transforming syntax between tools but leaves the problem of **semantic interoperability**. 
+
+In this context semantic interoperability is the ability of different tools to exchange data with unambiguous, shared meaning. It ensures that the meaning of the data is preserved and correctly interpreted between tools, even if those tools use different technologies, such as R and Python.
+
+Semantic interoperability starts from agreeing on unambiguous identifiers for things. For example, the EconDataverse package maintainers have agreed to refer to countries using [ISO 3166-1 standard codes](TKTK ref) and to represent years using four digits and the Gregorian calendar. This consensus ensures that data from different sources about the same countries and years can be joined, as in the R example below:
+
+::: {.callout-note}
+Teal: ChatGPT generated this example. It'd be great to have a better one along the same lines.
+:::
+
+```r
+# Load required package
+library(dplyr)
+
+# --- Macroeconomic dataset: GDP (in USD billions) ---
+macro_data <- data.frame(
+  iso3c = c("USA", "FRA", "DEU", "JPN"),
+  year = c(2024, 2024, 2024, 2024),
+  gdp_billion = c(27300, 3100, 4600, 5100)
+)
+
+# --- Population dataset: Population (in millions) ---
+population_data <- data.frame(
+  iso3c = c("USA", "FRA", "DEU", "BRA"),
+  year = c(2024, 2024, 2024, 2024),
+  population_million = c(334, 67, 84, 215)
+)
+
+# --- Perform inner join on ISO country code and year ---
+joined_data <- inner_join(macro_data, population_data, by = c("iso3c", "year"))
+```
+
+Imagine that the structure of the two datasets stayed the same but they used different identifiers for countries: one dataset referred to the United States as "États-Unis" while the other referred to it as "USA". 
+
+```r
+# --- Macroeconomic dataset: GDP (in USD billions) ---
+macro_data <- data.frame(
+  iso3c = c("États-Unis", "FRA", "DEU", "JPN"),
+  year = c(2024, 2024, 2024, 2024),
+  gdp_billion = c(27300, 3100, 4600, 5100)
+)
+
+# --- Population dataset: Population (in millions) ---
+population_data <- data.frame(
+  iso3c = c("USA", "FRA", "DEU", "BRA"),
+  year = c(2024, 2024, 2024, 2024),
+  population_million = c(334, 67, 84, 215)
+)
+
+# Join on USA data is not going to work as intended here.
+```
+
+The data analyst would have to first resolve the discrepancy -- mapping "États-Unis" to "USA" or vice versa -- in order to harmonize data from multiple sources. That work is toil that can be eliminated by agreeing on unambiguous identifiers and using them consistently.
+
+### Uniquely identifying numeric data
+
+The R example in [figure X](TKTK ref) also includes numeric data such as GDP (in billions of of US Dollars) and population (in millions). Unlike the ISO 3166 country codes, these data have ambiguous meanings. A human data analyst can infer at least part of the meaning from the column name (gdp_billion) and the accompanying comment ("GDP (in USD billions)"). Other parts are still ambiguous -- is it nominal or real GDP?
+
+We would like to eliminate this ambiguity and the toil required to resolve it by associating numeric data with unambiguous metadata. The [SDMX Information Model](TKTK ref) recommends that the metadata for a numeric datum include:
+
+* [Dimensions](TKTK ref to SDMX Information Model) whose combined values uniquely identify that datum in a [cube/hypercube of dimensions](TKTK ref OLAP Cube)
+* [Attributes](TKTK ref to SDMX information Model) of the datum, such as units of measurement
+
+The dimensions uniquely identifying a single nominal GDP measurement are:
+
+1. Place: the country associated with the GDP (e.g., "USA" and "FRA")
+2. Time: the year the GDP was measured (e.g., 2024).
+3. Indicator: nominal GDP
+
+Dimensions like "place" and attributes like "unit of measurement" should themselves be uniquely identified, and have associated properties such as human-readable labels and definitions, relationships with other dimensions or attributes, and constraints on the values that can be associated with a dimension (e.g., [code lists](TKTK ref)). The [SDMX Content-Oriented Guidelines](TKTK ref) provide a library of well-known, uniquely-identified dimensions and attributes that can be reused in many different domains.
+
+## Linking data
+
+We can use the unambiguous identifier for a thing ("USA") in the data as a key to resolve additional properties about the thing as well as its relationships with other things, following the [Linked Data principles](http://linkeddatabook.com/editions/1.0/). For example, we can use [schema.org](https://schema.org) vocabularies to describe the relationship between the country of the United States and the continent of North America, in a machine-readable format (an [RDF](TKTK ref) [knowledge graph](TKTK ref) represented in [Turtle](TKTK ref)):
+
+```ttl
+@prefix ex: <http://example.org/entities/> .
+@prefix schema: <https://schema.org/> .
+
+# United States of America
+ex:USA a schema:Country ;
+    # Human-readable labels in multiple human languages
+    schema:name "United States of America"@en ;
+    schema:name "États-Unis"@fr ;
+    schema:identifier "USA" ;
+    # A relationship: the country United States is contained in the place North America.
+    schema:containedInPlace ex:NA .
+
+# North America
+ex:NA a schema:Continent ;
+    schema:name "North America"@en ;
+    schema:identifier "NA" .
+```
+
+## Constraining data and metadata
+
+There is an additional level of consensus at work in the example above. By referencing schema.org we are implicitly agreeing that the unambiguous identifier `schema:containedInPlace` refers to a way of relating two places. That identifier can be used in turn as a key to further linked metadata:
+
+```ttl
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix schema: <https://schema.org/> .
+
+schema:containedInPlace a rdf:Property ;
+    rdfs:label "containedInPlace" ;
+    rdfs:comment "The basic containment relation between a place and one that contains it." ;
+    schema:domainIncludes schema:Place ;
+    schema:inverseOf schema:containsPlace ;
+    schema:rangeIncludes schema:Place .
+```
+
+This metadata is part of an **ontology**. An ontology is an "explicit specification of a conceptualization" (TKTK ref Gruber 1995) of a domain, including the "the types, properties, and interrelationships of entities that exist for a particular domain of discourse" (TKTK ref Gene Ontology Consortium). An ontology includes machine-readable specifications as well as human-readable labels and definitions that codify shared understanding of a domain. In the snippet above the domain is geography -- places and a valid relationship (contained-in) between them. The ontology is not about specific places, but about the category "place", its possible properties, and how it relates to other categories. The example eliminates ambiguity what `schema:containedInPlace` means through the use of a human-readable definition ("The basic containment relation ...") as well as machine-enforceable **constraints** on the categories of things that can be involved in the `schema:containedInPlace` relation (the `schema:domainIncludes` and `schema:rangeIncludes`). By constraining the domain of discourse an ontology amplifies the benefits of reusing identifiers by providing further clarity to humans as well as a way for machines to ensure that data and metadata stay within those constraints.
+
+### An ontology of economics
+
+Ontologies like the [Financial Industry Business Ontology (FIBO)](https://spec.edmcouncil.org/fibo/) are commonly used in the financial services sector to enable cross-system federation and aggregation of data in order to support decision-making, streamline regulatory reporting, and encourage the adoption of advanced analytical capabilities.
+
+Unfortunately, the macroeconomics domain does not have an ontology comparable in scope and rigour to FIBO. We recommend developing an ontology of macroeconomics incrementally. At a minimum this ontology should model:
+
+* the structure of statistical data cubes (dimensions, attributes, measures)
+* common dimensions such as time, place, and macroeconomic indicators
+* common attributes such as units
+
+In the long term the ontology should also model:
+
+* relationships between dimensions e.g., different macroeconomic indicators
+* relationships between attributes e.g., unit conversions
+* data lineage and provenance
+* modeling assumptions
+* information about economic organizations, people, and the relationships between them (a [social network](TKTK ref))
+* information about places and relationships between them (e.g., aggregates such as Low Income Countries)
+* machine-readable assertions extracted from human-written web pages and other documents (a [knowledge graph](TKTK ref) about the economic world)
+
+Fortunately, there are a number of existing standards that can serve as building blocks for the ontology, including:
+
+* [SDMX Data Structure Definitions (DSDs)](TKTK ref) e.g., [Balance of Payments (SDMX-BOP and Foreign Debt Investments (SDMX-FDI)](https://sdmx.org/sdmx-data-structure-definitions-for-balance-of-payments-sdmx-bop/)
+* the [RDF Data Cube Vocabulary](https://www.w3.org/TR/vocab-data-cube/) for publishing multi-dimensional statistical data as [Linked Data](TKTK ref)
+* the [PROV Ontology](https://www.w3.org/TR/prov-o/) of data lineage and provenance
+* [QUDT](https://qudt.org) ontologies of units of measure, quantity kind, dimensions and data types
+* [SKOS](https://www.w3.org/2004/02/skos/) specifications and standards for knowledge organization systems (KOS) (thesauri, taxonomies, et al.)
+* the [VoID vocabulary](https://www.w3.org/TR/void/) for describing linked datasets
+* [Schema.org](https://schema.org) cross-domain vocabularies
+
+## Tools to streamline economic data reuse
+
+Increasing semantic interoperability, developing ontologies, and taking advantage of linked data will reduce the toil and increase the productivity of using existing tools in the EconDataverse. However, in order to fully address the challenges highlighted in @sec-solution-criteria, we also recommend expanding and refining the EconDataverse toolkit in three key areas:
+
+* tools for extracting and transforming economic data and metadata
+* tools for exploring and finding economic data and metadata
+* tools for analyzing and manipulating financial models
+
+Figure @fig-solution-diagram illustrates our proposal for a new high-level system architecture for EconDataverse tools.
+
+{{< include figures/solution-diagram.qmd >}}
+
+Green lines indicate the flow of ontology-conformant data and metadata while red lines indicate the flow of data in other formats.
+
+The following subsections delve into the proposed tool developments in more detail.
+
+### Tools for extracting, transforming, and loading economic data and metadata {#sec-solution-etl}
+
+The majority of packages in the current EconDataverse package ecosystem extract structured data from IMF, World Bank, and other sources and transform them into [tidy format](TKTK ref), with each variable as a column and each observation as a row. Metadata are typically limited to column names, which are not explicitly grounded in an ontology that would provide context and definitions. With the notable exception of ISO 3166 country codes, there is relatively little standardization of non-numeric data across data sources.
+
+In the short- to mid-term we recommend implementing an adapter library and command-line program that transforms ontology-conformant data to and from the formats expected by existing EconDataverse tools. In the long term these tools should be retrofitted to produce and consume ontology-conformant data and metadata.
+
+New tools in the EconDataverse should produce ontology-conformant data and metadata that fully capture the semantics of the source data. These can be easily but lossily transformed into convenient but semantics-poor formats like tidy data frames for compatibility with third party tools.
+
+Extraction should not be limited to structured data sources. The ontology can also be used to guide Large Language Models (LLMs) in the extraction of ontology-conformant structured data from natural language sources such as the [World Bank country and climate development reports](TKTK ref) or the IMF's [Debt Sustainability Analysis Low-Income Countries (DSA LIC reports)](https://www.imf.org/en/Publications/DSA). The latter comprise a mixture of narrative text, rendered tables, and charts as PDFs. We recommend starting by extracting statistical data cube-compatible data (dimensions, attributes, measures) from tables in the documents and experimenting with different libraries and APIs such as [pdfplumber](TKTK) and [AWS Textract](TKTK) to identify a toolchain that maximizes key extraction metrics such as [precision, recall, and F1 score](TKTK ref).
+
+Ontology-conformant data and metadata extracted and transformed by new and existing tools should be loaded into a store that can preserve the full richness of the data, such as an [RDF triple store](TKTK ref). The tools described in the next subsection should query this store.
+
+### Tools for exploring and finding economic data and metadata {#sec-solution-ui}
+
+Tools for exploring and finding data and metadata tend to be useful in proportion to how closely the data's representation corresponds to the domain abstractions, like accounts and sub-accounts in Balance of Payments datasets. This requires a level of abstraction and interpretation that is difficult to achieve without building data source-specific tools. Instead, most generic tools work with data and metadata at the lowest common denominator of abstraction -- as tables and rows of figures to be scanned or a corpus of arbitrary text to be searched. The problem of interpretation is mostly left up to the user.
+
+Having data and metadata from multiple sources conform to a rich, domain-specific ontology makes it possible to build tools that work at a higher level of abstraction without sacrificing source independence. Tools can make assumptions about the meaning of the data and relationships between them, which dramatically increases the tools' power. For example, the next generation of EconDataverse tools could:
+
+* group or aggregate data from different (geographic) reference areas by considering explicit relationships between areas, such as part-whole or collection membership 
+* let users browse and filter cube-structured datasets and slices by the dimensions they incorporate (e.g., time, place, gender), provenance, or recency
+* suggest inputs for a given model by matching metadata about the inputs with metadata from a data/metadata catalog
+* support [federated querying](https://ruben.verborgh.org/blog/2015/06/09/federated-sparql-queries-in-your-browser/) of multiple public and private databases, such as [Google Data Commons](TKTK ref)
+
+These user-facing tools could have different interfaces or combinations of interfaces:
+* command line programs
+* graphical user interfaces
+* a [conversational user interface](https://en.wikipedia.org/wiki/Conversational_user_interface)
+* programmatic interfaces (APIs), such as a [SPARQL endpoint](TKTK ref) or [an SDMX Registry](TKTK ref)
+
+### Tools for analyzing and manipulating financial models
+
+Finally, the EconDataverse needs tools for analyzing and financial models, which are typically encoded in Excel spreadsheets. In the short term, tools should automate or semi-automate toilsome tasks like:
+
+* Manually reverse-engineering spreadsheets to identify which inputs are required for a subset of desired outputs, in order to avoid spending time populating redundant inputs
+* Manually mapping statistical data cube measures to spreadsheet inputs
+* Manually changing spreadsheets inputs in order to perform sensitivity analyses
+
+### Identifying minimal spreadsheet inputs {#sec-solution-identifying-minimal-spreadsheet-inputs}
+
+We recommend identifying or developing a tool that accepts a spreadsheet-based financial model such as the [LIC DSF](TKTK ref) or the [Dynamic Debt Toolkit](TKTK ref) and identifies which inputs are required for a subset of desired outputs, in order to avoid spending time populating redundant inputs. There are two fundamental approaches to this problem:
+
+* **White box**: build a [dependency graph](https://en.wikipedia.org/wiki/Dependency_graph) of spreadsheet formulae spanning the inputs and outputs in order to identify which inputs the desired outputs depend on. This approach is likely to produce false positives -- flagging a set of inputs larger than the true minimum -- because it is insensitive to the magnitude of input changes.
+* **Black box**: mutate individual inputs and combinations of inputs and record which outputs change. This approach may produce false negatives -- flagging a set of inputs smaller than the true minimum -- because of untested interactions between inputs.
+
+Ideally a tool will utilize both approaches to check each other.
+
+### Disambiguating inputs {#sec-solution-disambiguating-inputs}
+
+Much of the toil in using financial models lies in the process of identifying the right source data to supply as model inputs. For example, the Debt Dynamics Toolkit spreadsheet requires the following inputs in a single sheet:
+
+| Year / Variable | 2011  | 2012  |
+|----------------|-------|-------|
+| dt (debt including uncalled guarantees): stock of total gross public debt, percent of GDP | 31.59 | 35.34 |
+| o/w stock of local-currency guarantees (uncalled): stock of uncalled guarantees in local currency included in total debt, percent of GDP | 0.00 | 0.00 |
+| o/w stock of foreign-currency guarantees (uncalled): stock of uncalled guarantees in foreign currency included in total debt, percent of GDP | 0.00 | 0.00 |
+| αt (share excl. guarantees): share of foreign currency denominated debt in total debt, percent of total debt | 55.05 | 58.87 |
+| et (LCU/FCU, avg): nominal average exchange rate, local currency per unit of foreign currency | 18.92 | 19.50 |
+| et (LCU/FCU, eop): nominal end of period exchange rate, local currency per unit of foreign currency | 19.05 | 19.96 |
+| itd: nominal effective interest rate on local currency denominated debt, percent | 8.92  | 9.23  |
+| itf: nominal effective interest rate on foreign currency denominated debt, percent | 2.46  | 2.03  |
+| πt: GDP deflator inflation, percent | 5.60  | 5.39  |
+| gt: Real GDP growth, percent | 3.84  | 4.13  |
+| pbt: Primary balance, percent of GDP | -3.28 | -4.03 |
+| oft (other net debt-creating flows): Other net debt creating flows, percent of GDP | 0.00  | 0.00  |
+| πft: Foreign GDP deflator inflation, percent (used in fan chart) | 2.09  | 1.92  |
+
+: Dynamic Debt Toolkit inputs sheet {.bordered .striped .hover}
+
+Per the [data cube model](TKTK ref), each input cell can be uniquely identified by dimensions:
+
+* Time: with controlled values 2011 and 2012
+* Place: implicitly, the country whose debt is being analyzed
+* Indicator: such as "Real GDP growth"
+
+In this case the year and place are unambiguously identified and are relatively easy to match to source data. It is not as obvious how to map the indicator "nominal effective interest rate on foreign currency denominated debt, percent" to source data.
+
+One approach is to treat "nominal effective interest rate on foreign currency denominated debt, percent" as a unique identifier as-is, like [Google Data Commons](TKTK ref) does. This is likely to work for some simple indicators like "nominal GDP" but falters on more complex indicators that could be described in different ways, like this example.
+
+The approach we recommend is to decompose the name into a structured combination of sub-identifiers:
+
+* a base indicator: "interest rate"
+* qualifiers on the base indicator: "nominal", "effective", "on foreign currency denominated debt"
+* attributes: "percent", which should be treated as an attribute of the data rather than as part of the indicator dimension
+
+The structure and valid combinations of indicator, qualifier, and attribute values should be dictated by the ontology. Given a permissible set of controlled values, a Large Language Model could aid in this decomposition from natural language.
+
+This approach parallels the way World Bank debt codes can be decomposed into segments. For example, the World Bank debt code `DT.DOD.[Debt Instrument].[Debtor/Creditor Sector].[Unit]` can be decomposed into: 
+
+* DT: Debt
+* DOD: Debt Outstanding and Disbursed
+* Instrument Type (e.g., long-term, short-term, use of IMF credit)
+* Debtor or Creditor (e.g., public, private, multilateral, bilateral)
+* Unit of measure (e.g., CD = current US dollars, GD.ZS = % of GNI)
+
+### Automating sensitivity analyses with spreadsheets
+
+The "black box" approach to identifying minimal spreadsheet inputs, described in @sec-solution-identifying-minimal-spreadsheet-inputs, can also be used to perform sensitivity analyses by mutating combinations of spreadsheet inputs and recording which outputs change.
+
+### Models as data, models as code
+
+In the long term the financial models themselves should be treated as data, and extracted and transformed into ontology-conformant data and metadata. This approach would build on open source precedents like [Morphir](https://morphir.finos.org/), a system that captures an application's domain model and business logic in a portable / technology-agnostic manner. Given a portable representation of a model and an input dataset, we can execute the model by either:
+
+1. [Interpreting](https://en.wikipedia.org/wiki/Interpreter_(computing)) the model representation at runtime.
+2. [Generating code](https://en.wikipedia.org/wiki/Code_generation_(compiler)) from the representation and executing the code.
+
+Morphir takes the former approach. We would recommend the latter: lossily generating spreadsheets, Python, R, or other code from ontology types (e.g., dimensions and measures) and a portable model representation. The advantage of this approach is that it would produce an intermediate artifact (generated code) that can be inspected by human users and utilized from non-generated code in a way that ensures model inputs conform to the expected ontology types, above and beyond simple syntax checking.

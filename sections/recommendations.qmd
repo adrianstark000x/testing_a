@@ -1,0 +1,45 @@
+# Recommendations
+
+We recommend implementing the proposed EconDataverse system architecture (@fig-solution-diagram) iteratively, following [agile principles](https://agilemanifesto.org/principles.html). Rather than focusing on any single part of the system architecture, we recommend developing a set of minimum viable implementations of the different components that together address a useful, end-to-end scenario involving a simple economic model, the IMF's [Dynamic Debt Toolkit (DDT)](TKTK ref), applied to a reference country (Ghana). Specifically, the tools should help the human analyst:
+
+1. Identify a minimum set of spreadsheet inputs for a given output of the DDT template, as described in @sec-solution-identifying-minimal-spreadsheet-inputs
+2. Map the input labels to known data cube dimensions and attributes, as described in @sec-solution-disambiguating-inputs
+3. Find data associated with these dimensions in a store of ontology-conformant data and metadata, as described in @sec-solution-ui
+
+A batch process should eagerly populate the store queried by step #3 by extracting, transforming, and loading a subset of relevant ontology-conformant data and metadata (per @sec-solution-etl) from at least two data sources, such as
+
+1. [the World Bank’s World Development Indicators (WDI) API](https://datahelpdesk.worldbank.org/knowledgebase/articles/889392-about-the-indicators-api-documentation)
+2. [the IMF's World Economic Outlook (WEO) database](TKTK ref)
+
+The aggregation, linking, and subsequent querying of data and metadata from multiple sources will demonstrate the value of ontology-based semantic interoperability between tools.
+
+The following subsections recommend specific implementation projects to address the end-to-end scenario.
+
+## A tool for identifying minimal spreadsheet inputs
+
+We recommend identifying or developing a tool that accepts a spreadsheet-based financial model like the [Dynamic Debt Toolkit](TKTK) and identifies which inputs are required for a specific subset of desired outputs, in order to avoid spending time populating redundant inputs.
+
+## A minimum ontology of economics
+
+We recommend curating a minimum ontology of economics that is sufficient to losslessly capture data and metadata from the selected data sources. The ontology should be specified in [SHACL](TKTK ref). It should build on the [RDF Data Cube Vocabulary](TKTK ref) as well as existing [SDMX Data Structure Definitions](TKTK ref) such as the [Balance of Payments (SDMX-BOP and Foreign Debt Investments (SDMX-FDI)](https://sdmx.org/sdmx-data-structure-definitions-for-balance-of-payments-sdmx-bop/).
+
+Further, we recommend implementing Python and R libraries for manipulating ontology-conformant data and metadata as type-safe data structures (e.g., classes in Python) and serializing and deserializing data to and from lossless (RDF) and lossy (CSV) formats.
+
+## Extract-transform-load (ETL) pipelines
+
+We recommend developing pipelines that extract and transform data and metadata from the two sources and load them into an RDF triple store that enforces ontology conformance using [SHACL validation](TKTK ref). For batch ETL, we recommend utilizing a workflow orchestration tool such as [Apache Airflow](TKTK ref) or [Dagster](TKTK ref). The pipelines should use the Python and/or R libraries described in the previous subsection. Each phase of a pipeline (extract, transform, load) should be decoupled from the others in modules that can be reused in other contexts (e.g., doing ad hoc extraction and transformation in a computational notebook). Depending on the data sources, these pipelines could be implemented from scratch to produce ontology-conformant data or they could wrap one of the existing EconDataverse libraries, transforming the existing tidy output to ontology-conformant data. .
+
+## A web application for exploring and finding ontology-conformant data and metadata {#sec-recommendations-web-application}
+
+We recommend implementing a full-stack web application for querying the RDF triple store populated by the ETL pipelines. The application should initially consist of a reusable library mediating database access and a graphical user interface that offers multiple forms of search functionality:
+
+* [full-text search](https://en.wikipedia.org/wiki/Full-text_search)
+* [faceted search](https://en.wikipedia.org/wiki/Faceted_search)
+* [semantic search](https://en.wikipedia.org/wiki/Semantic_search) that accepts the string descriptions of inputs in the DDT spreadsheet (c.f., @sec-solution-disambiguating-inputs) and maps them to well-known data cube dimensions and attributes
+
+The search functionality of the application should be benchmarked against standard information retrieval metrics such as [Normalized Discounted Cumulative Gain (NDCG)](TKTK ref).
+
+After identifying the desired data / metadata, the user should be able to export them from the web application in one of two forms:
+
+* lossless RDF
+* lossy [tidy CSV](TKTK ref)

@@ -1,0 +1,31 @@
+---
+title: "Opportunities to streamline sovereign advisory projects using advanced AI and data technologies"
+author: 
+  - name: Minor Gordon
+    orcid: 0000-0003-1928-4130
+  - name: Kweku Ninsin
+date: today
+date-format: iso
+format:
+  html:
+    embed-resources: true
+    toc: true
+bibliography: references.bib
+---
+
+{{< include sections/executive-summary.qmd >}}
+
+{{< include sections/introduction.qmd >}}
+
+{{< include sections/problem.qmd >}}
+
+{{< include sections/solution-criteria.qmd >}}
+
+{{< include sections/solution.qmd >}}
+
+{{< include sections/recommendations.qmd >}}
+
+{{< include sections/conclusion.qmd >}}
+
+::: refs
+:::

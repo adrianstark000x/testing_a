@@ -1,0 +1,35 @@
+# Problem
+
+Sovereign debt analysis projects rely heavily on the analysis, processing, and storage of macroeconomic datasets. However, the current data-driven technologies and processes used by Debt Management Offices (DMOs) and sovereign analysts are often outdated, fragmented, and inefficient. These limitations are especially burdensome for resource-constrained institutions that are working to efficiently and effectively enhance debt analysis capacity.
+
+A significant portion of the work required for sovereign analysis qualifies as [toil](): manual, repetitive, low-leverage tasks that are often automatable and devoid of long-term value. Toil scales linearly with project complexity, meaning that as the scope of sovereign advisory efforts expands, so too does the operational burden. This introduces significant wasted time and effort into a sovereign analyst's work and weakens their ability to accomplish high-impact analytical work.
+
+### Data Processes and Technologies
+Sovereign analysts depend on macroeconomic datasets from: 
+
+* [The International Monetary Fund]()
+* [The World Bank]() 
+* Other national and international organizations
+
+However, this data is often siloed, difficult to find, hard to access, and/or poorly optimized for reuse. In many cases, the data needed to answer a pressing policy question is technically available but practically inaccessible—buried within PDFs, complex spreadsheets, or outdated web portals. 
+
+This fragmented data environment complicates fundamental tasks such as harmonizing multiple datasets, preserving data quality, or combining structured and unstructured information. Sovereign analysts may spend hours, if not days, locating, extracting, and validating data before any meaningful analysis can begin. The result is not only wasted time and effort, but also delayed insights that could inform critical policy choices.
+
+### Spreadsheet-based Models
+Further compounding the issue is the underdeveloped analytical tools for macroeconomic modeling. Many key workflows still rely on spreadsheet-based financial models, such as the [Low-Income Country Debt Sustainability Framework (LIC-DSF)]() and the [Debt Dynamics Tool (DDT)](). 
+
+These models are often opaque and complex, with multivariate inputs linked to policy-relevant outputs through undocumented, hard-to-follow logic. 
+
+There is typically no clear record of how input variables influence key indicators, or how one might efficiently trace through the model to answer a specific policy question. 
+
+This forces analysts to spend valuable time and effort on reverse-engineering spreadsheets.
+
+For example, in the LIC-DSF, the process of identifying the appropriate inputs for variables such as "**Indicators of Public and Publicly Guaranteed External Debt under Alternative Scenarios**" and "**Indicators of Public Debt Under Alternative Scenarios**"—both essential for conducting macroeconomic stress tests and assessing a country’s debt-carrying capacity—typically involves:
+
+* manually narrowing down relevant inputs to infer relationships
+* manually validating those inferences
+* recreating the validated logic across new spreadsheets to replicate results
+
+This process is highly labor-intensive, error-prone, and non-replicable at scale. The absence of automation or documentation not only creates inefficiencies, but also introduces risks to the consistency and credibility of the analysis.
+
+Modern AI technologies and advanced data systems offer an opportunity to reimagine the way sovereign analysis is done. These technologies have the capabilities to address these challenges to enhance the efficiency, accuracy, and impact of sovereign advisory work. By automating repetitive tasks and streamlining data workflows, these tools can eliminate toil and free up a sovereign analyst’s time for more high-value work.

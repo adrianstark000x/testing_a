@@ -1,0 +1,39 @@
+# Solution criteria {#sec-solution-criteria}
+
+A successful solution should save time and effort on data-driven sovereign advisor projects by eliminating unnecessary toil. In particular, we will focus on opportunities to optimize the use and reuse of data in these projects by making data more **findable**, **accessible**, **interoperable**, and **reusable**, following the FAIR Guiding Principles (TKTK ref). A solution should address existing challenges in:
+
+* finding and accessing the right economic data and data
+* integrating heterogeneous data from different sources
+* exchanging data and metadata between applications and storage in a way that preserves unambiguous, shared meaning
+* dealing with missing and low-quality metadata
+* tracking data provenance
+
+## Modularity
+
+A solution should be modular rather than monolithic, with [loosely coupled](TKTK ref) modules that communicate via a well-specified interchange. Each module should "do one thing well", following the [Unix philosophy](TKTK ref Raymond Art of Unix Programming).
+
+## Frequent releases
+
+A solution should be iteratively developed, with frequent releases. Module releases should start from a Minimum Viable Product (MVP) and incrementally add functionality on every release, rather than trying to perfect one feature before moving on to another -- [the "skateboard to car" approach espoused by Henrik Kniberg](https://blog.crisp.se/2016/01/25/henrikkniberg/making-sense-of-mvp).
+
+Thorough testing will be essential to ensuring consistent functionality, protecting against regressions, and helping users trust that releases will work as expected across different environments. Tests should cover the entire [test pyramid](https://martinfowler.com/articles/practical-test-pyramid.html) (also c.f., https://testing.googleblog.com/2010/12/test-sizes.html), with unit tests of individual modules as well as integration tests combining modules.
+
+## Flexibility
+
+A solution should be flexible enough to accommodate unanticipated future sources of data and financial models. It should avoid premature generalization ([YAGNI](TKTK ref)) as well as over-specialization.
+
+## Scalability
+
+A solution should scale in multiple dimensions, including the number of modules, the number of developers, and the volume of data.
+
+## Vendor-neutrality
+
+A solution should be as vendor-neutral as possible. It should build on community-maintained open source projects in preference to commercial packages. 
+
+## Reuse
+
+A solution should avoid needless reinvention and [Not Invented Here](TKTK ref) and take advantage of existing intellectual capital, particularly existing data models.
+
+## Transparency
+
+New code should be released under the MIT License, which permits wide usage and modification. The MIT License promotes transparency, allowing users to freely adapt the tools for their specific needs while contributing improvements to the community.

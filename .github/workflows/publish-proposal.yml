@@ -1,0 +1,28 @@
+# This GitHub Actions workflow was adapted from https://github.com/christophscheuch/isc-proposal-econdataverse/blob/main/.github/workflows/publish-proposal.yaml
+
+on:
+  push:
+    branches: [main, master]
+
+name: publish-proposal
+
+jobs:
+  render-proposal:
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      contents: write
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          tinytex: true
+          
+      - name: Render and publish to GitHub Pages
+        uses: quarto-dev/quarto-actions/publish@v2
+        with:
+          target: gh-pages
+          path: "report.qmd"

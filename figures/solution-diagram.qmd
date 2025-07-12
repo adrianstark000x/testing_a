@@ -1,0 +1,78 @@
+---
+# title: "Software Architecture Diagram"
+format:
+  html:
+    code-fold: true
+jupyter: python3
+---
+
+```{python}
+#| echo: false
+#| fig-cap: Recommended EconDataverse system architecture
+#| label: fig-solution-diagram 
+
+from diagrams import Cluster, Edge, Diagram
+from diagrams.generic.compute import Rack
+from diagrams.generic.database import SQL
+from diagrams.generic.device import Tablet
+from diagrams.generic.network import Switch
+from diagrams.generic.place import Datacenter
+from diagrams.generic.storage import Storage
+from diagrams.onprem.client import Client, User
+from diagrams.onprem.compute import Server
+from diagrams.programming.flowchart import MultipleDocuments
+from diagrams.programming.language import Python, R
+
+with Diagram(direction="TB", show=False) as diagram:
+  ontology_conformant_edge = Edge(color="darkgreen", style="dashed")
+  ontology_nonconformant_edge = Edge(color="darkred", style="dashed")
+
+  with Cluster("Extract-transform-load (ETL) processes"):
+    load = Switch("Load")
+
+    with Cluster("Extract + transform from existing libraries"):
+      adapter = Python("Adapter to ontology")
+      R("wbids") >> ontology_nonconformant_edge >> adapter
+      R("wbwdi") >> ontology_nonconformant_edge >> adapter
+      R("imfweo") >> ontology_nonconformant_edge >> adapter
+      adapter >> ontology_conformant_edge >> load
+
+    with Cluster("Extract + transform from structured data"):
+      Storage("SDMX") >> ontology_conformant_edge >> load
+      Datacenter("Google Data Commons") >> ontology_conformant_edge >> load
+
+    with Cluster("Extract + transform from unstructured documents"):
+      MultipleDocuments("IMF") >> ontology_conformant_edge >> load
+      MultipleDocuments("World Bank") >> ontology_conformant_edge >> load
+
+    with Cluster("Lossless storage"):
+      rdf_triple_store = Storage("RDF triple store")
+      load >> ontology_conformant_edge >> rdf_triple_store
+      load >> ontology_conformant_edge >> Storage("RDF file")
+
+    with Cluster("Lossy storage"):
+      rdbms = SQL("RDBMS")
+      tidy_csv = Storage("Tidy CSV")
+      sdmx_storage = Storage("SDMX")
+      load >> ontology_nonconformant_edge >> rdbms
+      load >> ontology_nonconformant_edge >> sdmx_storage
+      load >> ontology_nonconformant_edge >> tidy_csv
+
+  analyst = User("Analyst")
+
+  rdbms >> ontology_nonconformant_edge >> Tablet("BI tools") >> ontology_nonconformant_edge >> analyst
+  sdmx_storage >> ontology_nonconformant_edge >> Tablet("SDMX tools") >> ontology_nonconformant_edge >>  analyst
+  tidy_csv >> ontology_nonconformant_edge >> Tablet("Tidyverse tools") >> ontology_nonconformant_edge >> analyst
+
+  with Cluster("New user interfaces") as analyst_interface_cluster:
+    clients = [Client("Command line"), Client("Graphical"), Client("Conversational")]
+    for client in clients:
+      client >> ontology_conformant_edge >> analyst# >> client
+    rdf_triple_store >> clients[1]
+
+  with Cluster("Economic models"):
+    for i in range(2):
+      analyst >> ontology_conformant_edge >> Rack()# >> analyst
+
+diagram
+```
