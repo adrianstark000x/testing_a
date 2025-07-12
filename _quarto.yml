@@ -1,8 +1,0 @@
-project:
-  type: website
-  render:
-    - "*.qmd"
-    # - "!figures/"
-
-execute:
-  freeze: auto
