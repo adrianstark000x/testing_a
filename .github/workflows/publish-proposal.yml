@@ -16,11 +16,20 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+        
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           tinytex: true
-          
+
+      - name: Install Python and Dependencies
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+          cache: 'pip'
+      - run: pip install jupyter
+      - run: pip install -requirements.txt
+      
       - name: Render and publish to GitHub Pages
         uses: quarto-dev/quarto-actions/publish@v2
         with:

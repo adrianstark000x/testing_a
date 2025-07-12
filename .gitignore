@@ -1,6 +1,9 @@
-/diagrams_image*
+*.png
 /report.html
 /report.quarto_ipynb
 /report.pdf
 /report_files/
 /.venv/
+/_site/
+/_freeze/
+/.quarto/
